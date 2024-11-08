@@ -13,9 +13,8 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Quartz;
 
-namespace Evently.Modules.Users.Infrastructure.Outbox;
+namespace Evently.Modules.Events.Infrastructure.Outbox;
 
-// one instance background job running
 [DisallowConcurrentExecution]
 internal sealed class ProcessOutboxJob(
     IDbConnectionFactory dbConnectionFactory,
@@ -24,19 +23,16 @@ internal sealed class ProcessOutboxJob(
     IOptions<OutboxOptions> outboxOptions,
     ILogger<ProcessOutboxJob> logger) : IJob
 {
-    private const string ModuleName = "Users";
+    private const string ModuleName = "Events";
 
     public async Task Execute(IJobExecutionContext context)
     {
-        // 1 Get unprocessed messages
         logger.LogInformation("{Module} - Beginning to process outbox messages", ModuleName);
 
         await using DbConnection connection = await dbConnectionFactory.OpenConnectionAsync();
         await using DbTransaction transaction = await connection.BeginTransactionAsync();
 
         IReadOnlyList<OutboxMessageResponse> outboxMessages = await GetOutboxMessagesAsync(connection, transaction);
-
-        // 2. Iterate through messages
 
         foreach (OutboxMessageResponse outboxMessage in outboxMessages)
         {
@@ -50,9 +46,9 @@ internal sealed class ProcessOutboxJob(
                 using IServiceScope scope = serviceScopeFactory.CreateScope();
 
                 IEnumerable<IDomainEventHandler> domainEventHandlers = DomainEventHandlersFactory.GetHandlers(
-                     domainEvent.GetType(),
-                     scope.ServiceProvider,
-                     Application.AssemblyReference.Assembly);
+                    domainEvent.GetType(),
+                    scope.ServiceProvider,
+                    Application.AssemblyReference.Assembly);
 
                 foreach (IDomainEventHandler domainEventHandler in domainEventHandlers)
                 {
@@ -73,8 +69,6 @@ internal sealed class ProcessOutboxJob(
             await UpdateOutboxMessageAsync(connection, transaction, outboxMessage, exception);
         }
 
-        // 3. Update processed messages
-
         await transaction.CommitAsync();
 
         logger.LogInformation("{Module} - Completed processing outbox messages", ModuleName);
@@ -89,7 +83,7 @@ internal sealed class ProcessOutboxJob(
              SELECT
                 id AS {nameof(OutboxMessageResponse.Id)},
                 content AS {nameof(OutboxMessageResponse.Content)}
-             FROM users.outbox_messages
+             FROM events.outbox_messages
              WHERE processed_on_utc IS NULL
              ORDER BY occurred_on_utc
              LIMIT {outboxOptions.Value.BatchSize}
@@ -111,7 +105,7 @@ internal sealed class ProcessOutboxJob(
     {
         const string sql =
             """
-            UPDATE users.outbox_messages
+            UPDATE events.outbox_messages
             SET processed_on_utc = @ProcessedOnUtc,
                 error = @Error
             WHERE id = @Id
