@@ -1,5 +1,9 @@
 {
   "Users": {
+    "Outbox": {
+      "IntervalInSeconds": 5,
+      "BatchSize": 15
+    },
     "KeyCloak": {
       "AdminUrl": "",
       "TokenUrl": "",
