@@ -15,17 +15,17 @@ internal sealed class UpdateUserProfile : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("users/profile", async (Request request, ClaimsPrincipal claims, ISender sender) =>
-            {
-                Result result = await sender.Send(new UpdateUserCommand(
-                    claims.GetUserId(),
-                    request.FirstName,
-                    request.LastName));
+        app.MapPut("users/profile", async (Request request,  ClaimsPrincipal claims, ISender sender) =>
+        {
+            Result result = await sender.Send(new UpdateUserCommand(
+                claims.GetUserId(),
+                request.FirstName,
+                request.LastName));
 
-                return result.Match(Results.NoContent, ApiResults.Problem);
-            })
-            .RequireAuthorization(Permissions.ModifyUser)
-            .WithTags(Tags.Users);
+            return result.Match(Results.NoContent, ApiResults.Problem);
+        })
+        .RequireAuthorization(Permissions.ModifyUser)
+        .WithTags(Tags.Users);
     }
 
     internal sealed class Request

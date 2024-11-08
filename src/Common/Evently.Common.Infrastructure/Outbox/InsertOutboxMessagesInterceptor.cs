@@ -8,8 +8,10 @@ namespace Evently.Common.Infrastructure.Outbox;
 
 public sealed class InsertOutboxMessagesInterceptor : SaveChangesInterceptor
 {
-    public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result,
-        CancellationToken cancellationToken = new CancellationToken())
+    public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(
+        DbContextEventData eventData,
+        InterceptionResult<int> result,
+        CancellationToken cancellationToken = default)
     {
         if (eventData.Context is not null)
         {
@@ -33,12 +35,12 @@ public sealed class InsertOutboxMessagesInterceptor : SaveChangesInterceptor
 
                 return domainEvents;
             })
-            .Select(domainEvent => new OutboxMessage()
+            .Select(domainEvent => new OutboxMessage
             {
                 Id = domainEvent.Id,
-                OccurredOnUtc = domainEvent.OccurredOnUtc,
                 Type = domainEvent.GetType().Name,
-                Content = JsonConvert.SerializeObject(domainEvent, SerializerSettings.Instance)
+                Content = JsonConvert.SerializeObject(domainEvent, SerializerSettings.Instance),
+                OccurredOnUtc = domainEvent.OccurredOnUtc
             })
             .ToList();
 

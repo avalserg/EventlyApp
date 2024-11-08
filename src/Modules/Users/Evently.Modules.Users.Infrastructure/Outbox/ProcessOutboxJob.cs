@@ -15,7 +15,6 @@ using Quartz;
 
 namespace Evently.Modules.Users.Infrastructure.Outbox;
 
-// one instance background job running
 [DisallowConcurrentExecution]
 internal sealed class ProcessOutboxJob(
     IDbConnectionFactory dbConnectionFactory,
@@ -28,15 +27,12 @@ internal sealed class ProcessOutboxJob(
 
     public async Task Execute(IJobExecutionContext context)
     {
-        // 1 Get unprocessed messages
         logger.LogInformation("{Module} - Beginning to process outbox messages", ModuleName);
 
         await using DbConnection connection = await dbConnectionFactory.OpenConnectionAsync();
         await using DbTransaction transaction = await connection.BeginTransactionAsync();
 
         IReadOnlyList<OutboxMessageResponse> outboxMessages = await GetOutboxMessagesAsync(connection, transaction);
-
-        // 2. Iterate through messages
 
         foreach (OutboxMessageResponse outboxMessage in outboxMessages)
         {
@@ -50,9 +46,9 @@ internal sealed class ProcessOutboxJob(
                 using IServiceScope scope = serviceScopeFactory.CreateScope();
 
                 IEnumerable<IDomainEventHandler> domainEventHandlers = DomainEventHandlersFactory.GetHandlers(
-                     domainEvent.GetType(),
-                     scope.ServiceProvider,
-                     Application.AssemblyReference.Assembly);
+                    domainEvent.GetType(),
+                    scope.ServiceProvider,
+                    Application.AssemblyReference.Assembly);
 
                 foreach (IDomainEventHandler domainEventHandler in domainEventHandlers)
                 {
@@ -72,8 +68,6 @@ internal sealed class ProcessOutboxJob(
 
             await UpdateOutboxMessageAsync(connection, transaction, outboxMessage, exception);
         }
-
-        // 3. Update processed messages
 
         await transaction.CommitAsync();
 

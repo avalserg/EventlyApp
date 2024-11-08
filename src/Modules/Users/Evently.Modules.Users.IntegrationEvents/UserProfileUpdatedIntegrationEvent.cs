@@ -2,17 +2,24 @@
 
 namespace Evently.Modules.Users.IntegrationEvents;
 
-public sealed class UserProfileUpdatedIntegrationEvent(
-    Guid id,
-    DateTime occurredOnUtc,
-    Guid userId,
-    string firstName,
-    string lastName)
-    : IntegrationEvent(id, occurredOnUtc)
+public sealed class UserProfileUpdatedIntegrationEvent : IntegrationEvent
 {
-    public Guid UserId { get; init; } = userId;
+    public UserProfileUpdatedIntegrationEvent(
+        Guid id,
+        DateTime occurredOnUtc,
+        Guid userId,
+        string firstName,
+        string lastName)
+        : base(id, occurredOnUtc)
+    {
+        UserId = userId;
+        FirstName = firstName;
+        LastName = lastName;
+    }
 
-    public string FirstName { get; init; } = firstName;
+    public Guid UserId { get; init; }
 
-    public string LastName { get; init; } = lastName;
+    public string FirstName { get; init; }
+
+    public string LastName { get; init; }
 }

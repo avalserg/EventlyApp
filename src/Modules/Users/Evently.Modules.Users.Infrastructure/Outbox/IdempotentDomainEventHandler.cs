@@ -19,7 +19,6 @@ internal sealed class IdempotentDomainEventHandler<TDomainEvent>(
 
         var outboxMessageConsumer = new OutboxMessageConsumer(domainEvent.Id, decorated.GetType().Name);
 
-        // prevent execution duplicate domain event
         if (await OutboxConsumerExistsAsync(connection, outboxMessageConsumer))
         {
             return;
@@ -34,7 +33,7 @@ internal sealed class IdempotentDomainEventHandler<TDomainEvent>(
         DbConnection dbConnection,
         OutboxMessageConsumer outboxMessageConsumer)
     {
-        const string sql =
+        const string sql = 
             """
             SELECT EXISTS(
                 SELECT 1

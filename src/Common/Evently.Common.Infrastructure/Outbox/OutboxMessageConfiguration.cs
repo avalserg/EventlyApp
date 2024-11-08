@@ -11,7 +11,6 @@ public sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outbox
 
         builder.HasKey(o => o.Id);
 
-        // jsonb type for Postgres Db!!!
         builder.Property(o => o.Content).HasMaxLength(2000).HasColumnType("jsonb");
     }
 }

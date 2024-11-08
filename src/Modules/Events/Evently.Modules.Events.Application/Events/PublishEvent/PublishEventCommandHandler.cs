@@ -30,7 +30,7 @@ internal sealed class PublishEventCommandHandler(
 
         if (result.IsFailure)
         {
-            return Result.Failure(result.Error);
+            return result;
         }
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
