@@ -8,14 +8,15 @@ using Testcontainers.PostgreSql;
 using Testcontainers.Redis;
 
 namespace Evently.Modules.Users.IntegrationTests.Abstractions;
+
 public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
-       .WithImage("postgres:latest")
-       .WithDatabase("evently")
-       .WithUsername("postgres")
-       .WithPassword("postgres")
-       .Build();
+        .WithImage("postgres:latest")
+        .WithDatabase("evently")
+        .WithUsername("postgres")
+        .WithPassword("postgres")
+        .Build();
 
     private readonly RedisContainer _redisContainer = new RedisBuilder()
         .WithImage("redis:latest")
@@ -64,7 +65,7 @@ public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>, IAsy
     public new async Task DisposeAsync()
     {
         await _dbContainer.StopAsync();
-        await _dbContainer.StopAsync();
+        await _redisContainer.StopAsync();
         await _keycloakContainer.StopAsync();
     }
 }
