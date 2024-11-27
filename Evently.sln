@@ -115,6 +115,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evently.Modules.Users.UnitT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evently.Gateway", "src\API\Evently.Gateway\Evently.Gateway.csproj", "{495EB140-5D5C-4B04-8248-AD01C568203E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evently.Ticketing.Api", "src\API\Evently.Ticketing.Api\Evently.Ticketing.Api.csproj", "{3959C299-632B-4BBC-9AA7-3E0BDACB0B21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evently.IntegrationTests", "src\test\Evently.IntegrationTests\Evently.IntegrationTests.csproj", "{C23751B5-6004-4891-8A80-7937892D21BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -281,6 +285,14 @@ Global
 		{495EB140-5D5C-4B04-8248-AD01C568203E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{495EB140-5D5C-4B04-8248-AD01C568203E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{495EB140-5D5C-4B04-8248-AD01C568203E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3959C299-632B-4BBC-9AA7-3E0BDACB0B21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3959C299-632B-4BBC-9AA7-3E0BDACB0B21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3959C299-632B-4BBC-9AA7-3E0BDACB0B21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3959C299-632B-4BBC-9AA7-3E0BDACB0B21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C23751B5-6004-4891-8A80-7937892D21BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C23751B5-6004-4891-8A80-7937892D21BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C23751B5-6004-4891-8A80-7937892D21BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C23751B5-6004-4891-8A80-7937892D21BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -337,6 +349,8 @@ Global
 		{BC117293-522A-41EF-9DA6-0E13EE835F6D} = {A96CF29E-7416-4039-B4DB-368740508723}
 		{96351B7E-7600-4F53-B5DE-66669BBA24BF} = {2ADBDB97-45DB-4B47-991A-FA472687FA8B}
 		{495EB140-5D5C-4B04-8248-AD01C568203E} = {932AEF4C-FC6B-4496-9051-1AD3763D10DB}
+		{3959C299-632B-4BBC-9AA7-3E0BDACB0B21} = {932AEF4C-FC6B-4496-9051-1AD3763D10DB}
+		{C23751B5-6004-4891-8A80-7937892D21BC} = {2A0B9ECD-AE9E-442F-A737-6F64A201AFD2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1E42AE86-7F3C-45F4-A386-AB71CC4446CB}
