@@ -35,7 +35,7 @@ public sealed class Ticket : Entity
         return ticket;
     }
 
-    internal void MarkAsUsed()
+    public void MarkAsUsed()
     {
         UsedAtUtc = DateTime.UtcNow;
 

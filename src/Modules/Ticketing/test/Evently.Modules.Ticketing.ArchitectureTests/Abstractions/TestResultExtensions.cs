@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using TestResult = NetArchTest.Rules.TestResult;
+using NetArchTest.Rules;
 
 namespace Evently.Modules.Ticketing.ArchitectureTests.Abstractions;
 
